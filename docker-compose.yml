@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # Valkey / Redis Queue & Cache
+  redis:
+    image: valkey/valkey:7.2-alpine
+    container_name: pulsewatch-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+
+  # PulseWatch Web (Next.js App Router, Dashboard & API)
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pulsewatch-web
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL_UNPOOLED=${DATABASE_URL_UNPOOLED}
+      - REDIS_URL=redis://redis:6379
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      - BETTER_AUTH_URL=${BETTER_AUTH_URL:-http://localhost:3000}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - EMAIL_FROM=${EMAIL_FROM:-alerts@pulsewatch.dev}
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  # PulseWatch Background Monitoring Worker & Scheduler
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: pulsewatch-worker
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL_UNPOOLED=${DATABASE_URL_UNPOOLED}
+      - REDIS_URL=redis://redis:6379
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - EMAIL_FROM=${EMAIL_FROM:-alerts@pulsewatch.dev}
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+volumes:
+  redis_data:
