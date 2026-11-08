@@ -135,7 +135,7 @@ export default function MembersPage() {
 
           <button
             onClick={() => setIsInviteModalOpen(true)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-all shadow-lg shadow-emerald-500/20"
+            className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-4 py-2.5 sm:py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-all shadow-lg shadow-emerald-500/20"
           >
             <UserPlus className="w-4 h-4" />
             <span>Invite Member</span>
@@ -167,19 +167,19 @@ export default function MembersPage() {
             {members.map((m) => (
               <div
                 key={m.id}
-                className="p-4 flex items-center justify-between gap-4 hover:bg-slate-800/20 text-xs"
+                className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 hover:bg-slate-800/20 text-xs"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-slate-300 uppercase">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <div className="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-slate-300 uppercase shrink-0">
                     {m.user.name?.charAt(0) || "U"}
                   </div>
-                  <div>
-                    <h4 className="font-bold text-slate-100">{m.user.name}</h4>
-                    <p className="text-slate-400 text-[11px]">{m.user.email}</p>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-bold text-slate-100 truncate">{m.user.name}</h4>
+                    <p className="text-slate-400 text-[11px] truncate">{m.user.email}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto shrink-0 pt-2 sm:pt-0 border-t sm:border-0 border-slate-800/60">
                   {m.role === "OWNER" ? (
                     <span className="px-2.5 py-1 rounded bg-slate-800 text-slate-300 font-mono text-[10px] font-bold uppercase">
                       Owner
@@ -222,18 +222,18 @@ export default function MembersPage() {
 
             <div className="divide-y divide-slate-800/60 text-xs">
               {invitations.map((inv) => (
-                <div key={inv.id} className="p-4 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Mail className="w-4 h-4 text-slate-500" />
-                    <div>
-                      <p className="font-semibold text-slate-200">{inv.email}</p>
+                <div key={inv.id} className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <Mail className="w-4 h-4 text-slate-500 shrink-0" />
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-slate-200 truncate">{inv.email}</p>
                       <p className="text-[11px] text-slate-500">
                         Invited as {inv.role} · Expires {new Date(inv.expiresAt).toLocaleDateString()}
                       </p>
                     </div>
                   </div>
 
-                  <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                  <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 self-start sm:self-auto">
                     Pending
                   </span>
                 </div>
@@ -286,18 +286,18 @@ export default function MembersPage() {
                 </select>
               </div>
 
-              <div className="flex justify-end gap-2 pt-3">
+              <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 pt-3">
                 <button
                   type="button"
                   onClick={() => setIsInviteModalOpen(false)}
-                  className="px-4 py-2 rounded-lg border border-slate-800 text-slate-400 hover:bg-slate-800"
+                  className="w-full sm:w-auto px-4 py-2 rounded-lg border border-slate-800 text-slate-400 hover:bg-slate-800 text-center"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isInviting}
-                  className="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold"
+                  className="w-full sm:w-auto px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-center"
                 >
                   {isInviting ? "Sending..." : "Send Invitation"}
                 </button>

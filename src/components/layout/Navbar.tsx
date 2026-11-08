@@ -14,6 +14,8 @@ import {
   LogOut,
   Building,
   User as UserIcon,
+  Menu,
+  X,
 } from "lucide-react";
 import { signOut, useSession } from "@/lib/auth-client";
 
@@ -34,7 +36,17 @@ interface NotificationItem {
   createdAt: string;
 }
 
-export function Navbar({ activeWorkspaceId }: { activeWorkspaceId?: string }) {
+interface NavbarProps {
+  activeWorkspaceId?: string;
+  isMobileMenuOpen?: boolean;
+  onToggleMobileMenu?: () => void;
+}
+
+export function Navbar({
+  activeWorkspaceId,
+  isMobileMenuOpen,
+  onToggleMobileMenu,
+}: NavbarProps) {
   const router = useRouter();
   const { data: session } = useSession();
   const [workspaces, setWorkspaces] = useState<WorkspaceSummary[]>([]);
@@ -119,17 +131,31 @@ export function Navbar({ activeWorkspaceId }: { activeWorkspaceId?: string }) {
 
   return (
     <>
-      <header className="h-16 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40 px-4 lg:px-8 flex items-center justify-between">
-        {/* Left: Brand & Workspace Switcher */}
-        <div className="flex items-center gap-6">
-          <Link href="/dashboard" className="flex items-center gap-2.5 group">
+      <header className="h-16 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40 px-3 sm:px-6 lg:px-8 flex items-center justify-between">
+        {/* Left: Mobile Toggle, Brand & Workspace Switcher */}
+        <div className="flex items-center gap-2 sm:gap-4 md:gap-6 min-w-0">
+          {/* Mobile Menu Hamburger Toggle */}
+          <button
+            type="button"
+            onClick={onToggleMobileMenu}
+            className="lg:hidden p-2 -ml-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors shrink-0"
+            aria-label="Toggle navigation menu"
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-5 h-5 text-emerald-400" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
+          </button>
+
+          <Link href="/dashboard" className="flex items-center gap-2 group shrink-0">
             <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 group-hover:scale-105 transition-transform">
               <Activity className="w-4 h-4 animate-pulse" />
             </div>
             <div className="flex flex-col">
-              <span className="font-bold text-slate-100 tracking-tight text-base flex items-center gap-1.5">
+              <span className="font-bold text-slate-100 tracking-tight text-sm sm:text-base flex items-center gap-1.5">
                 PulseWatch
-                <span className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <span className="hidden sm:inline-block text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                   v1.0
                 </span>
               </span>
@@ -137,21 +163,21 @@ export function Navbar({ activeWorkspaceId }: { activeWorkspaceId?: string }) {
           </Link>
 
           {/* Workspace Dropdown */}
-          <div className="relative">
+          <div className="relative shrink min-w-0">
             <button
               onClick={() => setIsWorkspaceMenuOpen(!isWorkspaceMenuOpen)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800/60 text-sm font-medium text-slate-200 transition-colors"
+              className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800/60 text-xs sm:text-sm font-medium text-slate-200 transition-colors max-w-[120px] xs:max-w-[150px] sm:max-w-[180px]"
             >
-              <Building className="w-4 h-4 text-slate-400" />
-              <span className="max-w-[140px] truncate">
-                {currentWorkspace?.name || "Select Workspace"}
+              <Building className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+              <span className="truncate">
+                {currentWorkspace?.name || "Workspace"}
               </span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-1" />
+              <ChevronDown className="w-3 h-3 text-slate-400 ml-0.5 shrink-0" />
             </button>
 
             {isWorkspaceMenuOpen && (
               <div
-                className="absolute left-0 mt-2 w-56 rounded-xl border border-slate-800 bg-slate-900 shadow-2xl py-1 z-50 text-sm"
+                className="absolute left-0 mt-2 w-56 sm:w-60 max-w-[calc(100vw-1.5rem)] rounded-xl border border-slate-800 bg-slate-900 shadow-2xl py-1 z-50 text-sm"
                 onClick={() => setIsWorkspaceMenuOpen(false)}
               >
                 <div className="px-3 py-2 text-xs font-semibold text-slate-400 border-b border-slate-800 uppercase tracking-wider">
@@ -194,7 +220,7 @@ export function Navbar({ activeWorkspaceId }: { activeWorkspaceId?: string }) {
         </div>
 
         {/* Right: Notifications & Profile */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           {/* Notifications Dropdown */}
           <div className="relative">
             <button
@@ -212,7 +238,7 @@ export function Navbar({ activeWorkspaceId }: { activeWorkspaceId?: string }) {
 
             {isNotificationsOpen && (
               <div
-                className="absolute right-0 mt-2 w-80 sm:w-96 rounded-xl border border-slate-800 bg-slate-900 shadow-2xl py-2 z-50 text-sm"
+                className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-96 max-w-sm rounded-xl border border-slate-800 bg-slate-900 shadow-2xl py-2 z-50 text-sm"
               >
                 <div className="px-4 py-2 border-b border-slate-800 flex items-center justify-between">
                   <span className="font-semibold text-slate-200">
@@ -299,7 +325,7 @@ export function Navbar({ activeWorkspaceId }: { activeWorkspaceId?: string }) {
 
             {isUserMenuOpen && (
               <div
-                className="absolute right-0 mt-2 w-56 rounded-xl border border-slate-800 bg-slate-900 shadow-2xl py-1 z-50 text-sm"
+                className="absolute right-0 mt-2 w-56 max-w-[calc(100vw-1.5rem)] rounded-xl border border-slate-800 bg-slate-900 shadow-2xl py-1 z-50 text-sm"
                 onClick={() => setIsUserMenuOpen(false)}
               >
                 <div className="px-3 py-2 border-b border-slate-800">
@@ -361,18 +387,18 @@ export function Navbar({ activeWorkspaceId }: { activeWorkspaceId?: string }) {
                   className="w-full rounded-lg border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
                 />
               </div>
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="flex flex-col-reverse sm:flex-row justify-end gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => setIsNewWorkspaceModalOpen(false)}
-                  className="rounded-lg border border-slate-800 px-4 py-2 text-xs font-semibold text-slate-400 hover:bg-slate-800/60 transition-colors"
+                  className="w-full sm:w-auto rounded-lg border border-slate-800 px-4 py-2 text-xs font-semibold text-slate-400 hover:bg-slate-800/60 transition-colors text-center"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isCreatingWorkspace}
-                  className="rounded-lg bg-emerald-500 px-4 py-2 text-xs font-semibold text-slate-950 hover:bg-emerald-400 transition-colors disabled:opacity-50"
+                  className="w-full sm:w-auto rounded-lg bg-emerald-500 px-4 py-2 text-xs font-semibold text-slate-950 hover:bg-emerald-400 transition-colors disabled:opacity-50 text-center"
                 >
                   {isCreatingWorkspace ? "Creating..." : "Create Workspace"}
                 </button>

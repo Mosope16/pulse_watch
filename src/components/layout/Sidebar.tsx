@@ -14,6 +14,7 @@ import {
   Users,
   Sliders,
   ExternalLink,
+  X,
 } from "lucide-react";
 
 interface NavGroup {
@@ -105,15 +106,25 @@ const NAV_GROUPS: NavGroup[] = [
   },
 ];
 
+interface SidebarProps {
+  statusPageSlug?: string;
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
 export function Sidebar({
   statusPageSlug,
-}: {
-  statusPageSlug?: string;
-}) {
+  isOpen = false,
+  onClose,
+}: SidebarProps) {
   const pathname = usePathname();
 
-  return (
-    <aside className="w-64 border-r border-slate-800 bg-slate-950/60 flex flex-col shrink-0 min-h-[calc(100vh-4rem)]">
+  const handleLinkClick = () => {
+    if (onClose) onClose();
+  };
+
+  const navContent = (
+    <div className="flex flex-col h-full">
       <div className="flex-1 py-6 px-4 space-y-6 overflow-y-auto">
         {NAV_GROUPS.map((group) => (
           <div key={group.label} className="space-y-1.5">
@@ -131,7 +142,8 @@ export function Sidebar({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`group flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                    onClick={handleLinkClick}
+                    className={`group flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition-all ${
                       isActive
                         ? "bg-emerald-500/10 text-emerald-400 font-semibold border border-emerald-500/20"
                         : "text-slate-400 hover:text-slate-200 hover:bg-slate-900/60"
@@ -166,6 +178,7 @@ export function Sidebar({
           <Link
             href={`/status/${statusPageSlug}`}
             target="_blank"
+            onClick={handleLinkClick}
             className="flex items-center justify-between p-2.5 rounded-lg border border-slate-800 bg-slate-900/40 hover:bg-slate-900 hover:border-slate-700 text-slate-400 hover:text-emerald-400 transition-all text-xs"
           >
             <div className="flex items-center gap-2">
@@ -176,6 +189,52 @@ export function Sidebar({
           </Link>
         </div>
       )}
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Sidebar (visible on lg and up) */}
+      <aside className="hidden lg:flex w-64 border-r border-slate-800 bg-slate-950/60 flex-col shrink-0 min-h-[calc(100vh-4rem)]">
+        {navContent}
+      </aside>
+
+      {/* Mobile Backdrop */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-40 lg:hidden transition-opacity"
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Mobile Slide-out Drawer */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-72 bg-slate-950 border-r border-slate-800 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out lg:hidden ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="h-16 px-4 border-b border-slate-800 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+              <Activity className="w-4 h-4 animate-pulse" />
+            </div>
+            <span className="font-bold text-sm tracking-tight text-slate-100">
+              Menu
+            </span>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-850 transition-colors"
+            aria-label="Close menu"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto min-h-0">
+          {navContent}
+        </div>
+      </aside>
+    </>
   );
 }

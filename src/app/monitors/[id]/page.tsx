@@ -128,26 +128,26 @@ export default function MonitorDetailPage() {
       <div className="space-y-6">
         {/* Navigation Breadcrumb & Actions */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+          <div className="flex items-start sm:items-center gap-3 min-w-0">
             <Link
               href="/monitors"
-              className="p-2 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-slate-400 hover:text-white transition-colors"
+              className="p-2 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-slate-400 hover:text-white transition-colors shrink-0 mt-0.5 sm:mt-0"
             >
               <ArrowLeft className="w-4 h-4" />
             </Link>
-            <div>
-              <div className="flex items-center gap-2.5">
-                <h1 className="text-xl font-bold text-slate-100">{monitor.name}</h1>
+            <div className="min-w-0">
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <h1 className="text-lg sm:text-xl font-bold text-slate-100 truncate">{monitor.name}</h1>
                 <StatusBadge status={monitor.status} size="sm" />
               </div>
               <div className="flex items-center gap-2 text-xs text-slate-400 font-mono mt-0.5">
-                <span>{monitor.method}</span>
-                <span>{monitor.url}</span>
+                <span className="shrink-0">{monitor.method}</span>
+                <span className="truncate max-w-[170px] xs:max-w-[240px] sm:max-w-md">{monitor.url}</span>
                 <a
                   href={monitor.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-slate-500 hover:text-slate-300"
+                  className="text-slate-500 hover:text-slate-300 shrink-0"
                 >
                   <ExternalLink className="w-3 h-3" />
                 </a>
@@ -155,11 +155,11 @@ export default function MonitorDetailPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={handleManualCheck}
               disabled={isCheckingNow}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 text-xs font-semibold transition-colors disabled:opacity-50"
+              className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 hover:bg-amber-500/20 text-xs font-semibold transition-colors disabled:opacity-50"
             >
               <Zap className={`w-3.5 h-3.5 ${isCheckingNow ? "animate-spin" : ""}`} />
               <span>{isCheckingNow ? "Testing..." : "Check Now"}</span>
@@ -167,7 +167,7 @@ export default function MonitorDetailPage() {
 
             <button
               onClick={handleTogglePause}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white text-xs font-medium transition-colors"
+              className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white text-xs font-medium transition-colors"
             >
               {monitor.enabled ? (
                 <>
@@ -203,17 +203,17 @@ export default function MonitorDetailPage() {
         {/* Immediate Check Outcome Banner (if just triggered) */}
         {lastCheckOutcome && (
           <div
-            className={`p-4 rounded-xl border text-xs flex items-center justify-between ${
+            className={`p-4 rounded-xl border text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
               lastCheckOutcome.isSuccess
                 ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-200"
                 : "bg-rose-500/10 border-rose-500/30 text-rose-200"
             }`}
           >
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-start sm:items-center gap-2.5">
               {lastCheckOutcome.isSuccess ? (
-                <CheckCircle className="w-4 h-4 text-emerald-400" />
+                <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5 sm:mt-0" />
               ) : (
-                <AlertOctagon className="w-4 h-4 text-rose-400" />
+                <AlertOctagon className="w-4 h-4 text-rose-400 shrink-0 mt-0.5 sm:mt-0" />
               )}
               <span>
                 Manual check completed: <strong>{lastCheckOutcome.isSuccess ? "Success" : "Failed"}</strong> · HTTP{" "}
@@ -223,7 +223,7 @@ export default function MonitorDetailPage() {
             </div>
             <button
               onClick={() => setLastCheckOutcome(null)}
-              className="text-xs opacity-75 hover:opacity-100"
+              className="text-xs opacity-75 hover:opacity-100 self-end sm:self-auto"
             >
               Dismiss
             </button>
@@ -231,7 +231,7 @@ export default function MonitorDetailPage() {
         )}
 
         {/* Key Metrics Row */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <MetricCard
             title="24-Hour Uptime"
             value={`${monitor.uptime24h}%`}
@@ -259,8 +259,8 @@ export default function MonitorDetailPage() {
         </div>
 
         {/* Response Time Chart */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 space-y-4">
-          <div className="flex items-center justify-between">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5 space-y-4 min-w-0">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <h3 className="text-sm font-bold text-slate-100">
                 Response Time History (Recent Checks)
@@ -274,7 +274,7 @@ export default function MonitorDetailPage() {
             </span>
           </div>
 
-          <div className="h-64 w-full">
+          <div className="h-64 w-full min-w-0">
             {chartData.length > 0 ? (
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
@@ -363,7 +363,7 @@ export default function MonitorDetailPage() {
             </div>
 
             <div className="overflow-x-auto max-h-96">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left text-xs min-w-[520px]">
                 <thead className="bg-slate-950/60 border-b border-slate-800 text-[10px] uppercase text-slate-400 tracking-wider">
                   <tr>
                     <th className="py-2.5 px-4">Status</th>

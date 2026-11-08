@@ -92,18 +92,18 @@ export default function NotificationPreferencesPage() {
 
         <form onSubmit={handleSave} className="space-y-6">
           {/* Channel Toggles */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 space-y-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-6 space-y-4">
             <h3 className="text-sm font-bold text-slate-100">Notification Channels</h3>
 
             <div className="space-y-3">
-              <label className="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-slate-700">
-                <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-emerald-400" />
-                  <div>
+              <label className="flex items-start sm:items-center justify-between gap-3 p-3.5 sm:p-4 rounded-xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-slate-700">
+                <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
+                  <Mail className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5 sm:mt-0" />
+                  <div className="min-w-0 flex-1">
                     <span className="text-xs font-semibold text-slate-200 block">
                       Email Notifications
                     </span>
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-[11px] text-slate-400 block">
                       Deliver real-time alerts to your verified user email via Resend.
                     </span>
                   </div>
@@ -112,18 +112,18 @@ export default function NotificationPreferencesPage() {
                   type="checkbox"
                   checked={prefs.emailAlerts}
                   onChange={(e) => setPrefs({ ...prefs, emailAlerts: e.target.checked })}
-                  className="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500"
+                  className="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500 shrink-0 mt-1 sm:mt-0"
                 />
               </label>
 
-              <label className="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-slate-700">
-                <div className="flex items-center gap-3">
-                  <Bell className="w-4 h-4 text-emerald-400" />
-                  <div>
+              <label className="flex items-start sm:items-center justify-between gap-3 p-3.5 sm:p-4 rounded-xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-slate-700">
+                <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
+                  <Bell className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5 sm:mt-0" />
+                  <div className="min-w-0 flex-1">
                     <span className="text-xs font-semibold text-slate-200 block">
                       In-App Telemetry Feed
                     </span>
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-[11px] text-slate-400 block">
                       Show badges and real-time dropdown entries in the dashboard navigation bar.
                     </span>
                   </div>
@@ -132,23 +132,23 @@ export default function NotificationPreferencesPage() {
                   type="checkbox"
                   checked={prefs.inAppAlerts}
                   onChange={(e) => setPrefs({ ...prefs, inAppAlerts: e.target.checked })}
-                  className="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500"
+                  className="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500 shrink-0 mt-1 sm:mt-0"
                 />
               </label>
             </div>
           </div>
 
           {/* Event Triggers */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 space-y-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-6 space-y-4">
             <h3 className="text-sm font-bold text-slate-100">Event Triggers</h3>
 
             <div className="space-y-3">
-              <label className="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-slate-700">
-                <div>
+              <label className="flex items-start sm:items-center justify-between gap-3 p-3.5 sm:p-4 rounded-xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-slate-700">
+                <div className="min-w-0 flex-1">
                   <span className="text-xs font-semibold text-slate-200 block">
                     Monitor Goes DOWN (Outage)
                   </span>
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] text-slate-400 block">
                     Triggered when consecutive check failures reach threshold.
                   </span>
                 </div>
@@ -156,16 +156,16 @@ export default function NotificationPreferencesPage() {
                   type="checkbox"
                   checked={prefs.notifyOnDown}
                   onChange={(e) => setPrefs({ ...prefs, notifyOnDown: e.target.checked })}
-                  className="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500"
+                  className="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500 shrink-0 mt-1 sm:mt-0"
                 />
               </label>
 
-              <label className="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-slate-700">
-                <div>
+              <label className="flex items-start sm:items-center justify-between gap-3 p-3.5 sm:p-4 rounded-xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-slate-700">
+                <div className="min-w-0 flex-1">
                   <span className="text-xs font-semibold text-slate-200 block">
                     Monitor Recovers (Back Online)
                   </span>
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] text-slate-400 block">
                     Triggered when an unhealthy service passes subsequent checks.
                   </span>
                 </div>
@@ -173,16 +173,16 @@ export default function NotificationPreferencesPage() {
                   type="checkbox"
                   checked={prefs.notifyOnRecover}
                   onChange={(e) => setPrefs({ ...prefs, notifyOnRecover: e.target.checked })}
-                  className="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500"
+                  className="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500 shrink-0 mt-1 sm:mt-0"
                 />
               </label>
 
-              <label className="flex items-center justify-between p-3 rounded-xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-slate-700">
-                <div>
+              <label className="flex items-start sm:items-center justify-between gap-3 p-3.5 sm:p-4 rounded-xl border border-slate-800 bg-slate-950/60 cursor-pointer hover:border-slate-700">
+                <div className="min-w-0 flex-1">
                   <span className="text-xs font-semibold text-slate-200 block">
                     Incidents Created & Resolved
                   </span>
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] text-slate-400 block">
                     Receive updates on incident timelines, causes, and downtime durations.
                   </span>
                 </div>
@@ -190,7 +190,7 @@ export default function NotificationPreferencesPage() {
                   type="checkbox"
                   checked={prefs.notifyOnIncident}
                   onChange={(e) => setPrefs({ ...prefs, notifyOnIncident: e.target.checked })}
-                  className="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500"
+                  className="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500 shrink-0 mt-1 sm:mt-0"
                 />
               </label>
             </div>
@@ -199,7 +199,7 @@ export default function NotificationPreferencesPage() {
           <button
             type="submit"
             disabled={isSaving}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-emerald-500/20 disabled:opacity-50"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-emerald-500/20 disabled:opacity-50"
           >
             <Save className="w-4 h-4" />
             <span>{isSaving ? "Saving..." : "Save Preferences"}</span>

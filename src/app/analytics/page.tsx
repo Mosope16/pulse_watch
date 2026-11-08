@@ -59,7 +59,7 @@ export default function AnalyticsPage() {
     <DashboardLayout>
       <div className="space-y-8">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-extrabold text-slate-100 tracking-tight">
               Telemetry Analytics & SLAs
@@ -70,7 +70,7 @@ export default function AnalyticsPage() {
           </div>
           <button
             onClick={fetchAnalytics}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-xs font-semibold text-slate-300 hover:text-white transition-colors"
+            className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-xs font-semibold text-slate-300 hover:text-white transition-colors w-full sm:w-auto"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
             <span>Refresh</span>
@@ -78,7 +78,7 @@ export default function AnalyticsPage() {
         </div>
 
         {/* High Level Metrics */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <MetricCard
             title="24h Availability"
             value={`${summary.overallUptime24h}%`}
@@ -107,11 +107,11 @@ export default function AnalyticsPage() {
 
         {/* Charts Row 1: Response Time & Uptime Trend */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 space-y-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5 space-y-4 min-w-0">
             <h3 className="text-sm font-bold text-slate-100">
               Response Time Over Time (24h)
             </h3>
-            <div className="h-64 w-full">
+            <div className="h-64 w-full min-w-0">
               {data?.charts?.latency && data.charts.latency.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={data.charts.latency}>
@@ -149,11 +149,11 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 space-y-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5 space-y-4 min-w-0">
             <h3 className="text-sm font-bold text-slate-100">
               Uptime Percentage Trend (24h)
             </h3>
-            <div className="h-64 w-full">
+            <div className="h-64 w-full min-w-0">
               {data?.charts?.latency && data.charts.latency.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={data.charts.latency}>
@@ -194,11 +194,11 @@ export default function AnalyticsPage() {
 
         {/* Charts Row 2: Incident Frequency & Status Distribution */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 space-y-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5 space-y-4 min-w-0">
             <h3 className="text-sm font-bold text-slate-100">
               Incident Frequency (Last 7 Days)
             </h3>
-            <div className="h-64 w-full">
+            <div className="h-64 w-full min-w-0">
               {data?.charts?.incidentFrequency ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={data.charts.incidentFrequency}>
@@ -223,11 +223,11 @@ export default function AnalyticsPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 space-y-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5 space-y-4 min-w-0">
             <h3 className="text-sm font-bold text-slate-100">
               Infrastructure Status Distribution
             </h3>
-            <div className="h-64 w-full flex items-center justify-center">
+            <div className="h-64 w-full min-w-0 flex items-center justify-center">
               {data?.charts?.statusDistribution && data.charts.statusDistribution.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>

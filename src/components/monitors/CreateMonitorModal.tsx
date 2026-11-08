@@ -83,12 +83,12 @@ export function CreateMonitorModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="w-full max-w-2xl rounded-2xl border border-slate-800 bg-slate-900 shadow-2xl my-8 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-3 sm:p-4 overflow-y-auto">
+      <div className="w-full max-w-2xl max-h-[90vh] flex flex-col rounded-2xl border border-slate-800 bg-slate-900 shadow-2xl my-auto overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-800 px-6 py-4">
+        <div className="flex items-center justify-between border-b border-slate-800 px-4 sm:px-6 py-3.5 sm:py-4 shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+            <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shrink-0">
               <Globe className="w-4 h-4" />
             </div>
             <div>
@@ -102,7 +102,7 @@ export function CreateMonitorModal({
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
@@ -110,7 +110,7 @@ export function CreateMonitorModal({
 
         {/* Error Banner */}
         {errorMessage && (
-          <div className="mx-6 mt-4 p-3 rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-300 text-xs flex items-start gap-2">
+          <div className="mx-4 sm:mx-6 mt-3 sm:mt-4 p-3 rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-300 text-xs flex items-start gap-2 shrink-0">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-rose-400" />
             <div className="flex-1">
               <p className="font-semibold">Validation Error</p>
@@ -120,7 +120,7 @@ export function CreateMonitorModal({
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-5 text-sm">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-5 text-sm overflow-y-auto flex-1">
           {/* Monitor Name */}
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">
@@ -308,18 +308,18 @@ export function CreateMonitorModal({
           )}
 
           {/* Action buttons */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+          <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5 sm:gap-3 pt-4 border-t border-slate-800 shrink-0">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-lg border border-slate-800 text-xs font-semibold text-slate-400 hover:bg-slate-800/80 transition-colors"
+              className="w-full sm:w-auto px-4 py-2 rounded-lg border border-slate-800 text-xs font-semibold text-slate-400 hover:bg-slate-800/80 transition-colors text-center"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-emerald-500/20 disabled:opacity-50"
+              className="w-full sm:w-auto px-5 py-2.5 sm:py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-emerald-500/20 disabled:opacity-50 text-center"
             >
               {isLoading
                 ? "Validating & Saving..."

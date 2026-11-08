@@ -96,7 +96,7 @@ export default function WorkspaceSettingsPage() {
           </div>
         )}
 
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 space-y-5">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-6 space-y-5">
           <form onSubmit={handleSave} className="space-y-4 text-xs">
             <div>
               <label className="block text-slate-300 font-semibold uppercase tracking-wider mb-1.5">
@@ -139,7 +139,7 @@ export default function WorkspaceSettingsPage() {
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors disabled:opacity-50"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 sm:py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors disabled:opacity-50"
                 >
                   <Save className="w-4 h-4" />
                   <span>{isSaving ? "Saving..." : "Save Changes"}</span>
@@ -151,7 +151,7 @@ export default function WorkspaceSettingsPage() {
 
         {/* Danger Zone */}
         {role === "OWNER" && (
-          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/5 p-6 space-y-3">
+          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/5 p-4 sm:p-6 space-y-3">
             <h3 className="text-sm font-bold text-rose-300 flex items-center gap-2">
               <AlertTriangle className="w-4 h-4 text-rose-400" />
               <span>Danger Zone</span>
@@ -161,7 +161,7 @@ export default function WorkspaceSettingsPage() {
             </p>
             <button
               onClick={handleDelete}
-              className="px-4 py-2 rounded-lg bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs transition-colors flex items-center gap-2"
+              className="w-full sm:w-auto px-4 py-2.5 sm:py-2 rounded-lg bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2"
             >
               <Trash2 className="w-4 h-4" />
               <span>Delete Workspace</span>

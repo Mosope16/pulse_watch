@@ -92,7 +92,7 @@ export default function MonitorsPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-extrabold text-slate-100 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-100 tracking-tight">
               Monitors
             </h1>
             <p className="text-xs text-slate-400 mt-1">
@@ -105,7 +105,7 @@ export default function MonitorsPage() {
               setEditingMonitor(null);
               setIsCreateModalOpen(true);
             }}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-all shadow-lg shadow-emerald-500/20"
+            className="flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-all shadow-lg shadow-emerald-500/20 w-full sm:w-auto"
           >
             <Plus className="w-4 h-4" />
             <span>Create Monitor</span>
@@ -113,8 +113,8 @@ export default function MonitorsPage() {
         </div>
 
         {/* Filter bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl border border-slate-800 bg-slate-900/60">
-          <div className="relative flex-1 max-w-md">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 sm:p-4 rounded-xl border border-slate-800 bg-slate-900/60">
+          <div className="relative flex-1">
             <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
             <input
               type="text"
@@ -126,11 +126,11 @@ export default function MonitorsPage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-400 font-medium">Status:</span>
+            <span className="text-xs text-slate-400 font-medium shrink-0">Status:</span>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="rounded-lg border border-slate-800 bg-slate-950 px-2.5 py-1.5 text-xs text-slate-300 focus:border-emerald-500 focus:outline-none"
+              className="w-full sm:w-auto rounded-lg border border-slate-800 bg-slate-950 px-2.5 py-1.5 text-xs text-slate-300 focus:border-emerald-500 focus:outline-none"
             >
               <option value="ALL">All Monitors</option>
               <option value="UP">Operational (UP)</option>
@@ -169,7 +169,7 @@ export default function MonitorsPage() {
             {filteredMonitors.map((m) => (
               <div
                 key={m.id}
-                className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 hover:border-slate-700 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-5"
+                className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5 hover:border-slate-700 transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-4 sm:gap-5"
               >
                 {/* Left: Info */}
                 <div className="space-y-1.5 min-w-0">
@@ -191,17 +191,17 @@ export default function MonitorsPage() {
                     )}
                   </div>
                   <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-                    <span className="truncate max-w-md">{m.url}</span>
+                    <span className="truncate max-w-[180px] xs:max-w-[240px] sm:max-w-md">{m.url}</span>
                     <a
                       href={m.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-slate-500 hover:text-slate-300 transition-colors"
+                      className="text-slate-500 hover:text-slate-300 transition-colors shrink-0"
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   </div>
-                  <div className="flex items-center gap-4 text-xs text-slate-400 pt-1">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-400 pt-1">
                     <span>
                       Interval: <strong className="text-slate-300">{formatInterval(m.interval)}</strong>
                     </span>
@@ -215,7 +215,7 @@ export default function MonitorsPage() {
                 </div>
 
                 {/* Center: Sparkline & Metrics */}
-                <div className="lg:w-72 space-y-2 shrink-0">
+                <div className="w-full lg:w-72 space-y-2 shrink-0">
                   <div className="flex items-center justify-between text-xs text-slate-400">
                     <span>Recent Telemetry</span>
                     <span className="font-semibold text-slate-200">
@@ -234,7 +234,7 @@ export default function MonitorsPage() {
                 </div>
 
                 {/* Right: Actions */}
-                <div className="flex items-center gap-2 shrink-0 border-t lg:border-t-0 pt-3 lg:pt-0 border-slate-800">
+                <div className="flex items-center gap-2 shrink-0 border-t lg:border-t-0 pt-3 lg:pt-0 border-slate-800 flex-wrap">
                   <button
                     onClick={() => handleManualCheck(m.id)}
                     title="Run Check Now"

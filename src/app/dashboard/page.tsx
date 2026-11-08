@@ -137,7 +137,7 @@ function DashboardContent() {
         {/* Top Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-extrabold text-slate-100 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-100 tracking-tight">
               {workspace?.name || "Workspace"} Overview
             </h1>
             <p className="text-xs text-slate-400 mt-1">
@@ -145,11 +145,11 @@ function DashboardContent() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => loadDashboardData(false)}
               disabled={isRefreshing}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-xs font-semibold text-slate-300 hover:text-white transition-colors"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-xs font-semibold text-slate-300 hover:text-white transition-colors"
             >
               <RefreshCw
                 className={`w-3.5 h-3.5 ${isRefreshing ? "animate-spin" : ""}`}
@@ -159,7 +159,7 @@ function DashboardContent() {
 
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-all shadow-lg shadow-emerald-500/20"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-all shadow-lg shadow-emerald-500/20"
             >
               <Plus className="w-4 h-4" />
               <span>Add Monitor</span>
@@ -185,7 +185,7 @@ function DashboardContent() {
             </div>
             <Link
               href="/incidents"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-rose-500 text-white font-semibold text-xs hover:bg-rose-400 transition-colors shrink-0"
+              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-rose-500 text-white font-semibold text-xs hover:bg-rose-400 transition-colors shrink-0 w-full sm:w-auto"
             >
               <span>View Incident Timeline</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -194,7 +194,7 @@ function DashboardContent() {
         )}
 
         {/* High-level Metric Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <MetricCard
             title="Total Monitors"
             value={summary.totalMonitors}
@@ -232,7 +232,7 @@ function DashboardContent() {
         {/* Latency Trends Chart & Distribution */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Chart */}
-          <div className="lg:col-span-2 rounded-2xl border border-slate-800 bg-slate-900/60 p-5 space-y-4">
+          <div className="lg:col-span-2 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5 space-y-4 min-w-0">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-sm font-bold text-slate-100">
@@ -244,7 +244,7 @@ function DashboardContent() {
               </div>
             </div>
 
-            <div className="h-64 w-full">
+            <div className="h-64 w-full min-w-0">
               {analytics?.charts?.latency && analytics.charts.latency.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={analytics.charts.latency}>
@@ -295,7 +295,7 @@ function DashboardContent() {
           </div>
 
           {/* Status Breakdown Donut */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 space-y-4 flex flex-col justify-between">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5 space-y-4 flex flex-col justify-between min-w-0">
             <div>
               <h3 className="text-sm font-bold text-slate-100">
                 Monitor Status Distribution
@@ -305,7 +305,7 @@ function DashboardContent() {
               </p>
             </div>
 
-            <div className="h-44 w-full flex items-center justify-center">
+            <div className="h-44 w-full min-w-0 flex items-center justify-center">
               {analytics?.charts?.statusDistribution &&
               analytics.charts.statusDistribution.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
@@ -377,16 +377,16 @@ function DashboardContent() {
               </span>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3">
               {/* Search */}
-              <div className="relative">
+              <div className="relative flex-1">
                 <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
                 <input
                   type="text"
                   placeholder="Filter by name or URL..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="rounded-lg border border-slate-800 bg-slate-950 pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:border-emerald-500 focus:outline-none w-48 sm:w-64"
+                  className="w-full rounded-lg border border-slate-800 bg-slate-950 pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:border-emerald-500 focus:outline-none sm:w-64"
                 />
               </div>
 

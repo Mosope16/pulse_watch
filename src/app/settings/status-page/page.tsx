@@ -104,7 +104,7 @@ export default function StatusPageSettings() {
             <Link
               href={`/status/${statusPage.slug}`}
               target="_blank"
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-xs font-semibold text-emerald-400 transition-colors"
+              className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-xs font-semibold text-emerald-400 transition-colors"
             >
               <span>View Live Status Page</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -126,7 +126,7 @@ export default function StatusPageSettings() {
         )}
 
         <form onSubmit={handleSave} className="space-y-6 text-xs">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 space-y-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-6 space-y-4">
             <h3 className="text-sm font-bold text-slate-100">Page Details</h3>
 
             <div>
@@ -192,7 +192,7 @@ export default function StatusPageSettings() {
           </div>
 
           {/* Included Components Selection */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 space-y-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-6 space-y-4">
             <h3 className="text-sm font-bold text-slate-100">
               Services Displayed on Status Page
             </h3>
@@ -211,27 +211,27 @@ export default function StatusPageSettings() {
                   return (
                     <label
                       key={m.id}
-                      className="p-3.5 flex items-center justify-between hover:bg-slate-800/30 cursor-pointer transition-colors"
+                      className="p-3.5 flex items-center justify-between gap-3 hover:bg-slate-800/30 cursor-pointer transition-colors min-w-0"
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
                         <input
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => handleToggleMonitor(m.id)}
-                          className="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500"
+                          className="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500 shrink-0"
                         />
-                        <div>
-                          <span className="font-semibold text-slate-200 block">
+                        <div className="min-w-0 flex-1">
+                          <span className="font-semibold text-slate-200 block truncate">
                             {m.name}
                           </span>
-                          <span className="text-[11px] text-slate-400 font-mono">
+                          <span className="text-[11px] text-slate-400 font-mono block truncate">
                             {m.url}
                           </span>
                         </div>
                       </div>
 
                       <span
-                        className={`text-[10px] font-mono px-2 py-0.5 rounded ${
+                        className={`text-[10px] font-mono px-2 py-0.5 rounded shrink-0 ${
                           m.status === "UP"
                             ? "bg-emerald-500/10 text-emerald-400"
                             : "bg-rose-500/10 text-rose-400"
@@ -249,7 +249,7 @@ export default function StatusPageSettings() {
           <button
             type="submit"
             disabled={isSaving}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-emerald-500/20 disabled:opacity-50"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-emerald-500/20 disabled:opacity-50"
           >
             <Save className="w-4 h-4" />
             <span>{isSaving ? "Saving..." : "Save Status Page Settings"}</span>

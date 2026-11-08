@@ -59,14 +59,14 @@ export default function CheckHistoryPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 w-full sm:w-auto">
             <select
               value={selectedMonitorId}
               onChange={(e) => {
                 setSelectedMonitorId(e.target.value);
                 setPage(1);
               }}
-              className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none"
+              className="flex-1 sm:flex-initial rounded-lg border border-slate-800 bg-slate-900 px-3 py-1.5 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none"
             >
               <option value="">All Monitored Endpoints</option>
               {monitors.map((m) => (
@@ -78,7 +78,7 @@ export default function CheckHistoryPage() {
 
             <button
               onClick={fetchChecks}
-              className="p-2 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-white transition-colors"
+              className="p-2 rounded-lg border border-slate-800 bg-slate-900/60 hover:bg-slate-800 text-slate-300 hover:text-white transition-colors shrink-0"
               title="Refresh"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />
@@ -100,7 +100,7 @@ export default function CheckHistoryPage() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
+              <table className="w-full text-left text-xs min-w-[640px]">
                 <thead className="bg-slate-950/60 border-b border-slate-800 text-[10px] uppercase tracking-wider text-slate-400">
                   <tr>
                     <th className="py-3 px-4">Evaluation</th>
@@ -160,22 +160,22 @@ export default function CheckHistoryPage() {
 
           {/* Pagination */}
           {pagination && pagination.totalPages > 1 && (
-            <div className="p-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+            <div className="p-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400 text-center sm:text-left">
               <span>
                 Page {pagination.page} of {pagination.totalPages} ({pagination.totalCount} total checks)
               </span>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-end">
                 <button
                   disabled={page <= 1}
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
-                  className="px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 hover:bg-slate-800 disabled:opacity-40 transition-colors"
+                  className="flex-1 sm:flex-initial px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 hover:bg-slate-800 disabled:opacity-40 transition-colors"
                 >
                   Previous
                 </button>
                 <button
                   disabled={page >= pagination.totalPages}
                   onClick={() => setPage((p) => p + 1)}
-                  className="px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 hover:bg-slate-800 disabled:opacity-40 transition-colors"
+                  className="flex-1 sm:flex-initial px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 hover:bg-slate-800 disabled:opacity-40 transition-colors"
                 >
                   Next
                 </button>

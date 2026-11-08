@@ -84,7 +84,7 @@ export default function NotificationsPage() {
   return (
     <DashboardLayout>
       <div className="max-w-3xl space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl font-extrabold text-slate-100 tracking-tight">
               Notifications & Alerts
@@ -97,7 +97,7 @@ export default function NotificationsPage() {
           {unreadCount > 0 && (
             <button
               onClick={handleMarkAllRead}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-800 bg-slate-900 hover:bg-slate-800 text-xs text-emerald-400 font-semibold transition-colors"
+              className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-3 py-2 sm:py-1.5 rounded-lg border border-slate-800 bg-slate-900 hover:bg-slate-800 text-xs text-emerald-400 font-semibold transition-colors"
             >
               <Check className="w-3.5 h-3.5" />
               <span>Mark all as read</span>
@@ -127,11 +127,11 @@ export default function NotificationsPage() {
             notifications.map((item) => (
               <div
                 key={item.id}
-                className={`p-4 sm:p-5 flex items-start justify-between gap-4 transition-colors ${
+                className={`p-4 sm:p-5 flex items-start justify-between gap-3 sm:gap-4 transition-colors ${
                   !item.isRead ? "bg-slate-800/30" : "hover:bg-slate-800/10"
                 }`}
               >
-                <div className="flex items-start gap-3.5">
+                <div className="flex items-start gap-3 sm:gap-3.5 min-w-0 flex-1">
                   {item.type === "MONITOR_DOWN" && (
                     <div className="p-2 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20 shrink-0 mt-0.5">
                       <XCircle className="w-5 h-5" />
@@ -148,19 +148,19 @@ export default function NotificationsPage() {
                     </div>
                   )}
 
-                  <div className="space-y-1">
+                  <div className="space-y-1 min-w-0 flex-1">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-sm font-bold text-slate-100">
+                      <h3 className="text-sm font-bold text-slate-100 truncate">
                         {item.title}
                       </h3>
                       {!item.isRead && (
-                        <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 shrink-0" />
                       )}
                     </div>
-                    <p className="text-xs text-slate-300 leading-relaxed">
+                    <p className="text-xs text-slate-300 leading-relaxed break-words">
                       {item.message}
                     </p>
-                    <div className="flex items-center gap-3 pt-1 text-[11px] text-slate-500 font-mono">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 pt-1 text-[11px] text-slate-500 font-mono">
                       <span>{new Date(item.createdAt).toLocaleString()}</span>
                       {item.link && (
                         <Link

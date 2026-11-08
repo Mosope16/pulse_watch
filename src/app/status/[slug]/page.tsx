@@ -87,20 +87,20 @@ export default function PublicStatusPage() {
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-emerald-500/30 selection:text-emerald-300">
       {/* Public Header */}
       <header className="border-b border-slate-800/80 bg-slate-900/40 backdrop-blur-md sticky top-0 z-40">
-        <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
               <Activity className="w-4 h-4" />
             </div>
-            <div>
-              <h1 className="font-bold text-sm text-slate-100 tracking-tight">
+            <div className="min-w-0">
+              <h1 className="font-bold text-sm text-slate-100 tracking-tight truncate">
                 {statusPage.title}
               </h1>
-              <p className="text-[11px] text-slate-400">by {statusPage.workspaceName}</p>
+              <p className="text-[11px] text-slate-400 truncate">by {statusPage.workspaceName}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             <span className="text-[11px] text-slate-400 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               Live Telemetry
@@ -110,15 +110,15 @@ export default function PublicStatusPage() {
       </header>
 
       {/* Main Container */}
-      <main className="max-w-4xl mx-auto px-6 py-10 space-y-10">
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-6 sm:space-y-10">
         {/* Overall System Status Hero */}
-        <div className={`p-6 sm:p-8 rounded-3xl border shadow-2xl flex items-center gap-4 ${getStatusBannerClass()}`}>
+        <div className={`p-5 sm:p-8 rounded-3xl border shadow-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4 ${getStatusBannerClass()}`}>
           {systemStatus === "OPERATIONAL" ? (
-            <div className="p-3 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400">
+            <div className="p-3 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 shrink-0">
               <CheckCircle className="w-8 h-8" />
             </div>
           ) : (
-            <div className="p-3 rounded-2xl bg-rose-500/20 border border-rose-500/30 text-rose-400">
+            <div className="p-3 rounded-2xl bg-rose-500/20 border border-rose-500/30 text-rose-400 shrink-0">
               <AlertOctagon className="w-8 h-8 animate-pulse" />
             </div>
           )}
@@ -144,9 +144,9 @@ export default function PublicStatusPage() {
               {activeIncidents.map((incident: any) => (
                 <div
                   key={incident.id}
-                  className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-5 space-y-3"
+                  className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 sm:p-5 space-y-3"
                 >
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-rose-500 text-white">
                       {incident.status}
                     </span>
@@ -201,13 +201,13 @@ export default function PublicStatusPage() {
               </div>
             ) : (
               monitors.map((m: any) => (
-                <div key={m.id} className="p-4 sm:p-5 flex items-center justify-between gap-4">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2.5">
+                <div key={m.id} className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+                  <div className="space-y-1 min-w-0 flex-1">
+                    <div className="flex items-center gap-2.5 flex-wrap">
                       <h4 className="text-sm font-bold text-slate-100">{m.name}</h4>
                       <StatusBadge status={m.status} size="sm" />
                     </div>
-                    <div className="flex items-center gap-3 text-[11px] text-slate-400 font-mono">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate-400 font-mono">
                       <span>30d Uptime: <strong className="text-slate-300">{m.uptime30d}%</strong></span>
                       {m.avgResponseTime > 0 && (
                         <span>Avg Latency: <strong className="text-slate-300">{m.avgResponseTime}ms</strong></span>
@@ -215,7 +215,7 @@ export default function PublicStatusPage() {
                     </div>
                   </div>
 
-                  <div className="text-right">
+                  <div className="text-left sm:text-right shrink-0">
                     <span className="text-xs font-semibold text-emerald-400 font-mono">
                       {m.status === "UP" ? "100% Operational" : m.status}
                     </span>

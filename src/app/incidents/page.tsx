@@ -89,11 +89,11 @@ export default function IncidentsPage() {
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none"
+              className="w-full sm:w-auto rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-xs text-slate-200 focus:border-emerald-500 focus:outline-none"
             >
               <option value="ALL">All Incidents</option>
               <option value="ACTIVE">Active Incidents Only</option>
@@ -160,7 +160,7 @@ export default function IncidentsPage() {
                             {incident.cause || "Consecutive check failures reached."}
                           </p>
 
-                          <div className="flex items-center gap-4 text-[11px] text-slate-500 font-mono pt-2">
+                          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-slate-500 font-mono pt-2">
                             <span>Started: {new Date(incident.startedAt).toLocaleString()}</span>
                             {incident.durationSeconds && (
                               <span>Downtime: {formatDuration(incident.durationSeconds)}</span>
@@ -178,20 +178,28 @@ export default function IncidentsPage() {
           </div>
 
           {/* Incident Timeline & Detail Panel (Right col) */}
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 space-y-5 h-fit sticky top-20">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:p-5 space-y-5 h-fit lg:sticky lg:top-20">
             {selectedIncident ? (
               <div className="space-y-5">
                 <div>
-                  <div className="flex items-center justify-between">
-                    <span
-                      className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${
-                        selectedIncident.status === "RESOLVED"
-                          ? "bg-emerald-500/10 text-emerald-400"
-                          : "bg-rose-500/10 text-rose-400"
-                      }`}
-                    >
-                      {selectedIncident.status}
-                    </span>
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${
+                          selectedIncident.status === "RESOLVED"
+                            ? "bg-emerald-500/10 text-emerald-400"
+                            : "bg-rose-500/10 text-rose-400"
+                        }`}
+                      >
+                        {selectedIncident.status}
+                      </span>
+                      <button
+                        onClick={() => setSelectedIncident(null)}
+                        className="lg:hidden text-[10px] text-slate-500 hover:text-slate-300 font-medium px-2 py-0.5 rounded border border-slate-800"
+                      >
+                        Close
+                      </button>
+                    </div>
                     <Link
                       href={`/monitors/${selectedIncident.monitorId}`}
                       className="text-xs text-slate-400 hover:text-emerald-400 flex items-center gap-1 font-medium"
