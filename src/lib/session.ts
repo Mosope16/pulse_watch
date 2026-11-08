@@ -33,50 +33,72 @@ export async function requireWorkspaceContext(
 
   // If no workspaceId provided, find the user's first workspace
   if (!targetWorkspaceId) {
-    const firstMembership = await prisma.membership.findFirst({
+    let firstMembership = await prisma.membership.findFirst({
       where: { userId: user.id },
       include: { workspace: true },
       orderBy: { createdAt: "asc" },
     });
 
     if (!firstMembership) {
-      // Auto-create a default workspace for new users if none exists
-      const userWorkspace = await prisma.workspace.create({
-        data: {
-          name: `${user.name.split(" ")[0]}'s Workspace`,
-          slug: `workspace-${user.id.slice(0, 8)}-${Date.now().toString(36)}`,
-          memberships: {
-            create: {
-              userId: user.id,
-              role: Role.OWNER,
-            },
-          },
-          statusPage: {
-            create: {
-              slug: `status-${user.id.slice(0, 6)}-${Date.now().toString(36)}`,
-              title: `${user.name.split(" ")[0]}'s Services Status`,
-              description: "Live operational status of our monitored services.",
-              isPublic: true,
-            },
-          },
-          alertPrefs: {
-            create: {
-              userId: user.id,
-              emailAlerts: true,
-              inAppAlerts: true,
-              notifyOnDown: true,
-              notifyOnRecover: true,
-              notifyOnIncident: true,
-            },
-          },
-        },
-      });
+      // Auto-create a default workspace for new users if none exists.
+      // Use deterministic slug matching user.id to enforce DB-level uniqueness and prevent concurrent race conditions.
+      const defaultSlug = `ws-${user.id.toLowerCase()}`;
+      const defaultStatusSlug = `status-${user.id.toLowerCase()}`;
 
-      return {
-        user,
-        workspace: userWorkspace,
-        role: Role.OWNER,
-      };
+      try {
+        const userWorkspace = await prisma.workspace.create({
+          data: {
+            name: `${user.name.split(" ")[0]}'s Workspace`,
+            slug: defaultSlug,
+            memberships: {
+              create: {
+                userId: user.id,
+                role: Role.OWNER,
+              },
+            },
+            statusPage: {
+              create: {
+                slug: defaultStatusSlug,
+                title: `${user.name.split(" ")[0]}'s Services Status`,
+                description: "Live operational status of our monitored services.",
+                isPublic: true,
+              },
+            },
+            alertPrefs: {
+              create: {
+                userId: user.id,
+                emailAlerts: true,
+                inAppAlerts: true,
+                notifyOnDown: true,
+                notifyOnRecover: true,
+                notifyOnIncident: true,
+              },
+            },
+          },
+        });
+
+        return {
+          user,
+          workspace: userWorkspace,
+          role: Role.OWNER,
+        };
+      } catch (err: any) {
+        // If a concurrent request created the workspace in parallel (unique slug violation), retrieve the winner
+        firstMembership = await prisma.membership.findFirst({
+          where: { userId: user.id },
+          include: { workspace: true },
+          orderBy: { createdAt: "asc" },
+        });
+
+        if (firstMembership) {
+          return {
+            user,
+            workspace: firstMembership.workspace,
+            role: firstMembership.role,
+          };
+        }
+        throw err;
+      }
     }
 
     targetWorkspaceId = firstMembership.workspaceId;
