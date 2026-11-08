@@ -14,6 +14,7 @@ dist/
 
 # Production & Local Environment files
 .env
+.env.*
 .env*.local
 !.env.example
 

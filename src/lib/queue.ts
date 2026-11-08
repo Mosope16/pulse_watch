@@ -34,37 +34,60 @@ export interface AlertJobData {
   };
 }
 
-const connection = getRedisConnection();
-
 export const MONITOR_CHECK_QUEUE_NAME = "monitor-checks";
 export const ALERT_QUEUE_NAME = "alerts";
 
-export const monitorCheckQueue = new Queue<MonitorCheckJobData>(
-  MONITOR_CHECK_QUEUE_NAME,
-  {
-    connection,
-    defaultJobOptions: {
-      attempts: 2,
-      backoff: {
-        type: "exponential",
-        delay: 1000,
-      },
-      removeOnComplete: { count: 1000 },
-      removeOnFail: { count: 5000 },
-    },
-  }
-);
+let _monitorCheckQueue: Queue<MonitorCheckJobData> | null = null;
+let _alertQueue: Queue<AlertJobData> | null = null;
 
-export const alertQueue = new Queue<AlertJobData>(ALERT_QUEUE_NAME, {
-  connection,
-  defaultJobOptions: {
-    attempts: 3,
-    backoff: {
-      type: "exponential",
-      delay: 2000,
-    },
-    removeOnComplete: { count: 1000 },
-    removeOnFail: { count: 5000 },
+export function getMonitorCheckQueue(): Queue<MonitorCheckJobData> {
+  if (!_monitorCheckQueue) {
+    _monitorCheckQueue = new Queue<MonitorCheckJobData>(
+      MONITOR_CHECK_QUEUE_NAME,
+      {
+        connection: getRedisConnection(),
+        defaultJobOptions: {
+          attempts: 2,
+          backoff: {
+            type: "exponential",
+            delay: 1000,
+          },
+          removeOnComplete: { count: 1000 },
+          removeOnFail: { count: 5000 },
+        },
+      }
+    );
+  }
+  return _monitorCheckQueue;
+}
+
+export function getAlertQueue(): Queue<AlertJobData> {
+  if (!_alertQueue) {
+    _alertQueue = new Queue<AlertJobData>(ALERT_QUEUE_NAME, {
+      connection: getRedisConnection(),
+      defaultJobOptions: {
+        attempts: 3,
+        backoff: {
+          type: "exponential",
+          delay: 2000,
+        },
+        removeOnComplete: { count: 1000 },
+        removeOnFail: { count: 5000 },
+      },
+    });
+  }
+  return _alertQueue;
+}
+
+export const monitorCheckQueue = new Proxy({} as Queue<MonitorCheckJobData>, {
+  get(target, prop, receiver) {
+    return Reflect.get(getMonitorCheckQueue(), prop, receiver);
+  },
+});
+
+export const alertQueue = new Proxy({} as Queue<AlertJobData>, {
+  get(target, prop, receiver) {
+    return Reflect.get(getAlertQueue(), prop, receiver);
   },
 });
 

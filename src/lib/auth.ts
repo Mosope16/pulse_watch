@@ -16,6 +16,12 @@ export const auth = betterAuth({
   },
   secret: process.env.BETTER_AUTH_SECRET || "default_development_secret_key_32_characters_minimum",
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:3000",
+  trustedOrigins: [
+    process.env.BETTER_AUTH_URL,
+    process.env.NEXT_PUBLIC_APP_URL,
+    "https://pulsewatch-sope.vercel.app",
+    "http://localhost:3000",
+  ].filter(Boolean) as string[],
 });
 
 export type AuthSession = typeof auth.$Infer.Session;
