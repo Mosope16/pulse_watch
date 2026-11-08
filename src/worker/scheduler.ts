@@ -37,12 +37,7 @@ export async function runSchedulerTick() {
 
       if (isDue) {
         await enqueueMonitorCheck(monitor.id, monitor.workspaceId, false);
-        scheduledCount++;
       }
-    }
-
-    if (scheduledCount > 0) {
-      // console.log(`[Scheduler] Queued ${scheduledCount} monitor checks.`);
     }
   } catch (err: any) {
     console.error("[Scheduler Error]", err.message);

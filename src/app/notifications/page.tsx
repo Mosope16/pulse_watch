@@ -18,15 +18,22 @@ export default function NotificationsPage() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [error, setError] = useState<string | null>(null);
+
   const fetchNotifications = async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const res = await fetch("/api/notifications");
       if (res.ok) {
         const data = await res.json();
         setNotifications(data.notifications || []);
         setUnreadCount(data.unreadCount || 0);
+      } else {
+        setError("Failed to load notifications");
       }
+    } catch {
+      setError("Network error loading notifications");
     } finally {
       setIsLoading(false);
     }
@@ -38,31 +45,39 @@ export default function NotificationsPage() {
 
   const handleMarkAllRead = async () => {
     try {
-      await fetch("/api/notifications", {
+      const res = await fetch("/api/notifications", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ markAllRead: true }),
       });
+      if (!res.ok) {
+        setError("Failed to mark all as read");
+        return;
+      }
       setUnreadCount(0);
       setNotifications(notifications.map((n) => ({ ...n, isRead: true })));
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setError("Network error marking notifications as read");
     }
   };
 
   const handleMarkAsRead = async (id: string) => {
     try {
-      await fetch("/api/notifications", {
+      const res = await fetch("/api/notifications", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ notificationId: id }),
       });
+      if (!res.ok) {
+        setError("Failed to update notification");
+        return;
+      }
       setNotifications(
         notifications.map((n) => (n.id === id ? { ...n, isRead: true } : n))
       );
       setUnreadCount((c) => Math.max(0, c - 1));
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setError("Network error updating notification");
     }
   };
 
@@ -89,6 +104,12 @@ export default function NotificationsPage() {
             </button>
           )}
         </div>
+
+        {error && (
+          <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs">
+            {error}
+          </div>
+        )}
 
         {/* Notifications Feed */}
         <div className="rounded-2xl border border-slate-800 bg-slate-900/60 overflow-hidden divide-y divide-slate-800/60">

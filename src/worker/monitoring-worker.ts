@@ -347,10 +347,6 @@ export function createMonitoringWorker() {
     }
   );
 
-  worker.on("completed", (job) => {
-    // console.log(`[Worker Completed] Check for monitor ${job.data.monitorId}`);
-  });
-
   worker.on("failed", (job, err) => {
     console.error(
       `[Worker Failed] Job ${job?.id} failed for monitor ${job?.data.monitorId}:`,

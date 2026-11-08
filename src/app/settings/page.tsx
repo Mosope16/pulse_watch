@@ -69,9 +69,12 @@ export default function WorkspaceSettingsPage() {
       const res = await fetch(`/api/workspaces/${workspace.id}`, { method: "DELETE" });
       if (res.ok) {
         router.push("/dashboard");
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setMessage(data.error || "Failed to delete workspace");
       }
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      setMessage(err instanceof Error ? err.message : "Failed to delete workspace");
     }
   };
 

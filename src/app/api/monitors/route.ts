@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { requireWorkspaceContext } from "@/lib/session";
 import { validateUrlForSSRF } from "@/lib/ssrf";
 import { enqueueMonitorCheck } from "@/lib/queue";
-import { Role, MonitorMethod } from "@prisma/client";
+import { Prisma, Role, MonitorMethod, MonitorStatus } from "@prisma/client";
 
 const createMonitorSchema = z.object({
   workspaceId: z.string().optional(),
@@ -33,12 +33,12 @@ export async function GET(req: NextRequest) {
 
     const { workspace } = await requireWorkspaceContext(workspaceIdParam, Role.MEMBER);
 
-    const whereClause: any = {
+    const whereClause: Prisma.MonitorWhereInput = {
       workspaceId: workspace.id,
     };
 
     if (statusParam && ["UP", "DEGRADED", "DOWN", "PAUSED"].includes(statusParam.toUpperCase())) {
-      whereClause.status = statusParam.toUpperCase();
+      whereClause.status = statusParam.toUpperCase() as MonitorStatus;
     }
 
     if (query && query.trim() !== "") {

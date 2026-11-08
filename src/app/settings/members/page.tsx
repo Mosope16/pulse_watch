@@ -24,6 +24,7 @@ export default function MembersPage() {
   const [inviteRole, setInviteRole] = useState("MEMBER");
   const [isInviting, setIsInviting] = useState(false);
   const [inviteMessage, setInviteMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchMembers = async () => {
     setIsLoading(true);
@@ -81,29 +82,41 @@ export default function MembersPage() {
 
   const handleRoleChange = async (userId: string, newRole: string) => {
     if (!workspace) return;
+    setError(null);
     try {
-      await fetch(`/api/workspaces/${workspace.id}/members`, {
+      const res = await fetch(`/api/workspaces/${workspace.id}/members`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, role: newRole }),
       });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Failed to update member role");
+        return;
+      }
       await fetchMembers();
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setError("Network error updating member role");
     }
   };
 
   const handleRemoveMember = async (userId: string, name: string) => {
     if (!workspace) return;
     if (!confirm(`Are you sure you want to remove ${name} from this workspace?`)) return;
+    setError(null);
 
     try {
-      await fetch(`/api/workspaces/${workspace.id}/members?userId=${userId}`, {
+      const res = await fetch(`/api/workspaces/${workspace.id}/members?userId=${userId}`, {
         method: "DELETE",
       });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Failed to remove member");
+        return;
+      }
       await fetchMembers();
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setError("Network error removing member");
     }
   };
 
@@ -132,6 +145,12 @@ export default function MembersPage() {
         {inviteMessage && (
           <div className="p-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-xs font-semibold">
             {inviteMessage}
+          </div>
+        )}
+
+        {error && (
+          <div className="p-3 rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-300 text-xs font-semibold">
+            {error}
           </div>
         )}
 

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { requireWorkspaceContext } from "@/lib/session";
-import { Role, IncidentStatus } from "@prisma/client";
+import { Prisma, Role, IncidentStatus } from "@prisma/client";
 
 export async function GET(req: NextRequest) {
   try {
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
     const { workspace } = await requireWorkspaceContext(workspaceIdParam, Role.MEMBER);
 
-    const whereClause: any = {
+    const whereClause: Prisma.IncidentWhereInput = {
       workspaceId: workspace.id,
     };
 

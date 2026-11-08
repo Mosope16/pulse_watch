@@ -24,6 +24,10 @@ yarn-error.log*
 .pnpm-debug.log*
 *.log
 
+# Database / Cache dumps
+dump.rdb
+*.rdb
+
 # Editor & OS files
 .DS_Store
 *.suo

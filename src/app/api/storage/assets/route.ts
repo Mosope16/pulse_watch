@@ -6,9 +6,13 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   try {
+    await requireAuthUser();
     const key = req.nextUrl.searchParams.get("key");
 
     if (key) {
+      if (key.includes("..") || key.startsWith("/")) {
+        return NextResponse.json({ error: "Invalid asset key" }, { status: 400 });
+      }
       const content = await getAsset(key);
       if (!content) {
         return NextResponse.json({ error: "Asset not found" }, { status: 404 });
@@ -41,8 +45,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "File is required" }, { status: 400 });
     }
 
+    if (customKey && (customKey.includes("..") || customKey.startsWith("/"))) {
+      return NextResponse.json({ error: "Invalid custom key path" }, { status: 400 });
+    }
+
     const buffer = Buffer.from(await file.arrayBuffer());
-    const key = customKey || `uploads/${Date.now()}-${file.name.replace(/\s+/g, "_")}`;
+    const safeFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const key = customKey || `uploads/${Date.now()}-${safeFileName}`;
 
     await uploadAsset(key, buffer, file.type || "application/octet-stream");
 
@@ -64,6 +73,10 @@ export async function DELETE(req: NextRequest) {
     const key = req.nextUrl.searchParams.get("key");
     if (!key) {
       return NextResponse.json({ error: "Key query parameter is required" }, { status: 400 });
+    }
+
+    if (key.includes("..") || key.startsWith("/")) {
+      return NextResponse.json({ error: "Invalid asset key" }, { status: 400 });
     }
 
     await deleteAsset(key);
