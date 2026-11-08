@@ -154,8 +154,8 @@ export async function executeHttpCheck(
       if (method !== "HEAD") {
         try {
           const buffer = await response.arrayBuffer();
-          // Slice preview to max 4KB to save memory and avoid giant payloads
-          const previewBuffer = buffer.slice(0, 4096);
+          // Support reading up to 512KB to avoid missing body content in full pages
+          const previewBuffer = buffer.slice(0, 524288);
           const decoder = new TextDecoder("utf-8");
           textBody = decoder.decode(previewBuffer);
         } catch {
@@ -181,9 +181,14 @@ export async function executeHttpCheck(
         };
       }
 
-      // Expected body text check
+      // Expected body text check (supports exact and case-insensitive matching)
       if (expectedText && expectedText.trim() !== "") {
-        if (!textBody.includes(expectedText)) {
+        const needle = expectedText.trim();
+        const matches =
+          textBody.includes(needle) ||
+          textBody.toLowerCase().includes(needle.toLowerCase());
+
+        if (!matches) {
           return {
             isSuccess: false,
             isDegraded: false,
